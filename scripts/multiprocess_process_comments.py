@@ -12,14 +12,14 @@ from multiprocessing import Process, Queue
 def process_file(file):
     # Work for each file goes here
     print("Processing file ", file)
-    raw_working_file = join(RAW_COMMENTS_DIR, file)
+    INPUT_working_file = join(INPUT_COMMENTS_DIR, file)
     save_file = join(WORKING_DIR, file)
     tmp_save_file = open(save_file + ".tmp", "a")
 
     if args.verbose:
-        print(raw_working_file)
+        print(INPUT_working_file)
 
-    with open(raw_working_file, "r") as infile:
+    with open(INPUT_working_file, "r") as infile:
         line_count = 0
         for line in infile:
             
@@ -73,7 +73,7 @@ def main(args):
 
     file_index = 0
 
-    for file in RAW_COMMENT_FILES:
+    for file in INPUT_COMMENT_FILES:
         queue.put(file)    
 
     for w in range(number_of_workers):
@@ -93,15 +93,15 @@ def main(args):
 
 if __name__ == '__main__':
 
-
-    RAW_COMMENTS_DIR = "/mnt/mediashare/data/git/reddit_dev/raw_reddit_comments/"
+    # Default folder locations - Change if you are not 
+    INPUT_COMMENTS_DIR = "/mnt/mediashare/data/git/reddit_dev/raw_reddit_comments/"
     OUTPUT_DIR = "/mnt/mediashare/data/git/reddit_dev/processed_reddit_comments/"
 
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--resume",  action='store_true', help="Resume from previous run.")
     parser.add_argument("-n", "--run-name", default= str(date.today()),help="Name of the folder to store the files in. Defaults to date.")
-    parser.add_argument("-c", "--RAW_COMMENTS_DIR", default= RAW_COMMENTS_DIR,help="Raw Comments folder.")
+    parser.add_argument("-c", "--INPUT_COMMENTS_DIR", default= INPUT_COMMENTS_DIR,help="INPUT Comments folder.")
     parser.add_argument("-o", "--OUTPUT_DIR", default= OUTPUT_DIR,help="Processed Comments folder.")
     parser.add_argument("-x", "--exit", action='store_true', help="Exit after printing out info, for dev use.")
     parser.add_argument("-s", "--sample", type=check_positive, default=100, help="The number of entries you want to grab for each file.")
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     if not isdir(WORKING_DIR):
         makedirs(WORKING_DIR)
 
-    RAW_COMMENT_FILES = [f for f in listdir(RAW_COMMENTS_DIR) if isfile(join(RAW_COMMENTS_DIR, f))]
+    INPUT_COMMENT_FILES = [f for f in listdir(INPUT_COMMENTS_DIR) if isfile(join(INPUT_COMMENTS_DIR, f))]
     PROCESSED_COMMENT_FILES = [f for f in listdir(WORKING_DIR) if isfile(join(WORKING_DIR, f))]
 
     if args.resume:
@@ -131,16 +131,16 @@ if __name__ == '__main__':
             remove(join(WORKING_DIR, file))
 
         # Remove processed files from the list of files that need to be processed
-        RAW_COMMENT_FILES = [x for x in RAW_COMMENT_FILES if x not in PROCESSED_COMMENT_FILES]
+        INPUT_COMMENT_FILES = [x for x in INPUT_COMMENT_FILES if x not in PROCESSED_COMMENT_FILES]
 
         if args.verbose:
-            print("Raw files: ", len(RAW_COMMENT_FILES))
-            print("Raw files: ", RAW_COMMENT_FILES)
+            print("INPUT files: ", len(INPUT_COMMENT_FILES))
+            print("INPUT files: ", INPUT_COMMENT_FILES)
             print("Processed files: ", len(PROCESSED_COMMENT_FILES))
 
     if args.exit:
         print("Running in dev/exit mode. Will exit after printing out data.")
-        print("Number of files in RAW folder:", len(RAW_COMMENT_FILES))
+        print("Number of files in input folder:", len(INPUT_COMMENT_FILES))
         print("Processed Files: ", PROCESSED_COMMENT_FILES)
         print("OUTPUT_DIR", args.OUTPUT_DIR)
         print("WORKING_DIR", WORKING_DIR)
