@@ -95,21 +95,21 @@ if __name__ == '__main__':
 
 
     RAW_COMMENTS_DIR = "/mnt/mediashare/data/git/reddit_dev/raw_reddit_comments/"
-    PROCESSED_COMMENTS_DIR = "/mnt/mediashare/data/git/reddit_dev/processed_reddit_comments/"
+    OUTPUT_DIR = "/mnt/mediashare/data/git/reddit_dev/processed_reddit_comments/"
 
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-r", "--resume",  action='store_true', help="Resume from previous run.")
     parser.add_argument("-n", "--run-name", default= str(date.today()),help="Name of the folder to store the files in. Defaults to date.")
     parser.add_argument("-c", "--RAW_COMMENTS_DIR", default= RAW_COMMENTS_DIR,help="Raw Comments folder.")
-    parser.add_argument("-p", "--PROCESSED_COMMENTS_DIR", default= PROCESSED_COMMENTS_DIR,help="Processed Comments folder.")
+    parser.add_argument("-o", "--OUTPUT_DIR", default= OUTPUT_DIR,help="Processed Comments folder.")
     parser.add_argument("-x", "--exit", action='store_true', help="Exit after printing out info, for dev use.")
     parser.add_argument("-s", "--sample", type=check_positive)
     parser.add_argument("-v", "--verbose", action='store_true', default=False, help="Print out messages to the console.")
     args = parser.parse_args()
 
 
-    WORKING_DIR = join(PROCESSED_COMMENTS_DIR, args.run_name)
+    WORKING_DIR = join(args.OUTPUT_DIR, args.run_name)
 
     if not isdir(WORKING_DIR):
         makedirs(WORKING_DIR)
@@ -135,10 +135,14 @@ if __name__ == '__main__':
 
         if args.verbose:
             print("Raw files: ", len(RAW_COMMENT_FILES))
+            print("Raw files: ", RAW_COMMENT_FILES)
             print("Processed files: ", len(PROCESSED_COMMENT_FILES))
 
     if args.exit:
+        print("Number of files in RAW folder:", len(RAW_COMMENT_FILES))
         print("Processed Files: ", PROCESSED_COMMENT_FILES)
+        print("OUTPUT_DIR", args.OUTPUT_DIR)
+        print("WORKING_DIR", WORKING_DIR)
         if args.sample:
             print("Sample Size from each file:", str(args.sample))
         sys.exit()
