@@ -104,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--RAW_COMMENTS_DIR", default= RAW_COMMENTS_DIR,help="Raw Comments folder.")
     parser.add_argument("-o", "--OUTPUT_DIR", default= OUTPUT_DIR,help="Processed Comments folder.")
     parser.add_argument("-x", "--exit", action='store_true', help="Exit after printing out info, for dev use.")
-    parser.add_argument("-s", "--sample", type=check_positive)
+    parser.add_argument("-s", "--sample", type=check_positive, default=100, help="The number of entries you want to grab for each file.")
     parser.add_argument("-v", "--verbose", action='store_true', default=False, help="Print out messages to the console.")
     args = parser.parse_args()
 
@@ -139,6 +139,7 @@ if __name__ == '__main__':
             print("Processed files: ", len(PROCESSED_COMMENT_FILES))
 
     if args.exit:
+        print("Running in dev/exit mode. Will exit after printing out data.")
         print("Number of files in RAW folder:", len(RAW_COMMENT_FILES))
         print("Processed Files: ", PROCESSED_COMMENT_FILES)
         print("OUTPUT_DIR", args.OUTPUT_DIR)
