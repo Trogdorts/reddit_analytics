@@ -93,7 +93,7 @@ def main(args):
 
 if __name__ == '__main__':
 
-    # Default folder locations - Change if you are not 
+    # Default folder locations - Change if you are not ME
     INPUT_COMMENTS_DIR = "/mnt/mediashare/data/git/reddit_dev/raw_reddit_comments/"
     OUTPUT_DIR = "/mnt/mediashare/data/git/reddit_dev/processed_reddit_comments/"
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     parser.add_argument("-c", "--INPUT_COMMENTS_DIR", default= INPUT_COMMENTS_DIR,help="INPUT Comments folder.")
     parser.add_argument("-o", "--OUTPUT_DIR", default= OUTPUT_DIR,help="Processed Comments folder.")
     parser.add_argument("-x", "--exit", action='store_true', help="Exit after printing out info, for dev use.")
-    parser.add_argument("-s", "--sample", type=check_positive, default=100, help="The number of entries you want to grab for each file.")
+    parser.add_argument("-s", "--sample", type=check_positive, help="The number of entries you want to grab for each file.")
     parser.add_argument("-v", "--verbose", action='store_true', default=False, help="Print out messages to the console.")
     args = parser.parse_args()
 
